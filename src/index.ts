@@ -1,15 +1,17 @@
 /** @format */
 
 import { Observable, Subscriber } from '@grainular/nord';
-import { BehaviorSubject } from 'rxjs';
+import { SubjectLike, Observable as RxJSObservable, BehaviorSubject, Observer, Subscription } from 'rxjs';
 
 /**
- * Converts an RxJS BehaviorSubject into a Grain Observable, allowing integration of RxJS Observables
- * with Grain's reactive components.
+ * Converts an RxJS Observable or Subject-like object into a Grain Observable,
+ * allowing integration of RxJS Observables with Grain's reactive components.
  *
- * @template V - The type of values emitted by the BehaviorSubject.
+ * @template V - The type of values emitted by the RxJS Observable or Subject-like object.
  *
- * @param {BehaviorSubject<V>} observer - The RxJS BehaviorSubject to convert into a Grain Observable.
+ * @param {RxJSObservable<V> | SubjectLike<V>} observer - The RxJS Observable or Subject-like object
+ * to convert into a Grain Observable.
+ * @param {V} [initial] - (Optional) The initial value to set for the observer if supported.
  *
  * @returns {Observable} A Grain Observable that can be used in Grain components.
  *
@@ -34,7 +36,14 @@ import { BehaviorSubject } from 'rxjs';
  * });
  */
 
-export const grainy = <V>(observer: BehaviorSubject<V>): Observable => {
+export const grainy = <V>(observer: RxJSObservable<V> | SubjectLike<V>, initial?: V): Observable => {
+    // If a optional initial value is passed, initialize the observer
+    if (initial !== undefined && 'next' in observer) {
+        window.requestIdleCallback(() => {
+            observer.next(initial);
+        });
+    }
+
     return {
         subscribe: (subscriber: Subscriber<V>) => {
             const subscription = observer.subscribe({ next: (value) => subscriber(value) });
