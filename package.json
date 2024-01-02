@@ -9,9 +9,9 @@
   "types": "dist/types/index.d.ts",
   "license": "MIT",
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^25.0.0",
     "@commitlint/cli": "^18.4.3",
     "@commitlint/config-conventional": "^18.4.3",
+    "@rollup/plugin-commonjs": "^25.0.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@types/node": "^20.10.3",
     "alex": "^11.0.0",
@@ -40,13 +40,20 @@
     "test": "ava"
   },
   "ava": {
-		"extensions": {
-			"ts": "module"
-		},
-		"nodeArguments": [
+    "extensions": {
+      "ts": "module"
+    },
+    "nodeArguments": [
       "--no-warnings",
-			"--loader=ts-node/esm",
-			"--experimental-specifier-resolution=node"
-		]
-	}
+      "--loader=ts-node/esm",
+      "--experimental-specifier-resolution=node"
+    ]
+  },
+  "name": "@grainular/nord-rxjs",
+  "version": "1.0.0",
+  "author": "Sebastian Heinz <sebsatian@iamsebastian.dev>",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  }
 }
