@@ -1,46 +1,50 @@
 <!-- @format -->
 
-# TypeScript NPM-Package Template
+# @grainular/nord-rxjs
 
-This template can be used as a opinionated starting point for a typescript based npm package. It uses several tools to enhance the dx aspect of creating a npm package. Read more about how the different aspects of the template in the [`Contributing Guidelines`](./contributing.md).
+[![Npm package version](https://badgen.net/npm/v/@grainular/nord-rxjs)](https://www.npmjs.com/package/@grainular/nord-rxjs)
+[![Npm package total downloads](https://badgen.net/npm/dt/@grainular/nord-rxjs)](https://npmjs.com/package/@grainular/nord-rxjs)
+[![Npm package license](https://badgen.net/npm/license/@grainular/nord-rxjs)](https://npmjs.com/package/@grainular/nord-rxjs)
 
-## Tools used in the template
+`@grainular/nord-rxjs` is an adapter library that allows seamless integration between [RxJS](https://rxjs.dev) Observables and [Nørd](https://nordjs.dev)'s reactive system. With this library, you can use RxJS Observables as the source of reactive data within your Nørd applications.
 
--   [yarn](https://yarnpkg.com/getting-started)
--   [TypeScript](https://www.typescriptlang.org)
--   [Rollup](https://rollupjs.org/guide/en/) as bundler, using esbuild to transpile TypeScript to JavaScript
--   [ava](https://github.com/avajs/ava) as test-runner
--   [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) to ensure commit standards
--   [Semantic Release](https://semantic-release.gitbook.io/semantic-release/) to create releases automatically
--   [Prettier](https://prettier.io) & [Pretty-quick](https://www.npmjs.com/package/pretty-quick) to format the code
--   [alex](https://alexjs.com) for linting the documentation
+## Installation
 
-## Getting started
-
-To get started, clone the repository and recreate the git repository to start with a clean template.
+You can install `@grainular/nord-rxjs` using npm or yarn:
 
 ```bash
-git clone https://github.com/IamSebastianDev/template-pkg.git <your-package-name>
+# Using yarn
+yarn add @grainular/nord-rxjs
 
-cd <your-package-name>
-
-# Reset the git repository
-yarn reset
-
-# This will leave you with three branches, main, development and release.
+# Using npm
+npm install @grainular/nord-rxjs
 ```
 
-After creating a new repository, fill out the remaining information in the `package.json` and install the dev-dependencies. You should use the defaults already set in the `package.json` and only change the not already set meta information.
+## Usage
 
-```bash
-# fill out the package.json
-yarn init
-# do a clean install of the dependencies
-yarn ci
-# install githooks
-yarn setup
+To use @grainular/nord-rxjs, you can import the grainy function and use it to convert RxJS Observables into Grain Observables. Here's an example of how to use it in a Nørd component:
+
+```ts
+import { createComponent, render, $, on } from '@grainular/nord';
+import { grainy } from '@grainular/nord-rxjs';
+import { BehaviorSubject } from 'rxjs';
+
+const App = createComponent((html) => {
+    const _count = new BehaviorSubject<number>(0);
+    const count = grainy(_count);
+
+    return html`<button ${on('click', () => _count.next(_count.value + 1))}>${$(count)}</button>`;
+});
+
+render(App, { target: document.querySelector('#app') });
 ```
 
-## Development
+In this example, we import @grainular/nord-rxjs, create a Nørd component, and use the grainy function to convert an RxJS BehaviorSubject into a Grain Observable. This allows you to seamlessly use RxJS Observables within your Nørd application.
 
-Checkout the [`Contributing Guidelines`](./contributing.md) to find out how to develop within your newly created repository.
+## Contributing
+
+Contributions to Nørd are always welcome! Whether it's bug reports, feature requests, or code contributions, please read our [contribution guidelines](./contributing.md) for more information on getting involved.
+
+## License
+
+Nørd-rxjs is open-sourced software licensed under the MIT License.
