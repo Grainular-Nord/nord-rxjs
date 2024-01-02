@@ -53,7 +53,7 @@
     ]
   },
   "name": "@grainular/nord-rxjs",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Sebastian Heinz <sebsatian@iamsebastian.dev>",
   "private": false,
   "publishConfig": {
