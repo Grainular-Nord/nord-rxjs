@@ -20,7 +20,7 @@ jobs:
           node-version: 18.x
           cache: "npm"
       - name: CI setup
-        run: yarn ci install-peers
+        run: yarn ci 
       - name: CI build
         run: yarn build
       # For now, the test step is disabled until tests are written
@@ -37,7 +37,7 @@ jobs:
           node-version: 18.x
           cache: "npm"
       - name: Publish setup
-        run: yarn ci install-peers
+        run: yarn ci
       - name: Publish build
         run: yarn build
       - name: Publish to NPM
