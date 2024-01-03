@@ -70,7 +70,3 @@ Contributions to Nørd are always welcome! Whether it's bug reports, feature req
 ## License
 
 Nørd-rxjs is open-sourced software licensed under the MIT License.
-
-```
-
-```
