@@ -47,7 +47,7 @@ In this example, we import `@grainular/nord-rxjs`, create a `Nørd` component, a
 
 `@grainular/nord-rxjs` also provides a custom RxJS Subject called `GrainularSubject` that offers integration with `Nørd`'s reactive template engine. You can use it as follows:
 
-````ts
+```ts
 import { createComponent, on, render } from '@grainular/nord';
 import { GrainularSubject } from '@grainular/nord-rxjs';
 
@@ -59,7 +59,6 @@ const App = createComponent((html) => {
 });
 
 render(App, { target: document.querySelector('#app') });
-
 ```
 
 > A `GrainularSubject` is an augmented `BehaviorSubject` and can be used as such.
@@ -71,4 +70,7 @@ Contributions to Nørd are always welcome! Whether it's bug reports, feature req
 ## License
 
 Nørd-rxjs is open-sourced software licensed under the MIT License.
-````
+
+```
+
+```
