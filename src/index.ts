@@ -1,6 +1,6 @@
 /** @format */
 
-import { Observable, Subscriber } from '@grainular/nord';
+import { Grain, Observable, Subscriber, Updater, grain } from '@grainular/nord';
 import { SubjectLike, Observable as RxJSObservable, BehaviorSubject, Observer, Subscription } from 'rxjs';
 
 /**
@@ -51,3 +51,64 @@ export const grainy = <V>(observer: RxJSObservable<V> | SubjectLike<V>, initial?
         },
     };
 };
+
+/**
+ * A custom RxJS Subject that provides integration with Grain's reactive components.
+ *
+ * @template V - The type of values emitted by the subject.
+ */
+export class GrainularSubject<V> extends BehaviorSubject<V> {
+    /**
+     * Internal Grain instance associated with this subject.
+     * @private
+     */
+    private _grain: Grain<V> = grain(this.value);
+
+    /**
+     * A custom RxJS Subject that provides a way to integrate RxJS Observables into a Nørd Component template.
+     *
+     * @template V - The type of values emitted by the subject.
+     *
+     * @param {V} initial - The initial value of the subject.
+     *
+     * @example
+     * import { createComponent, on, render } from '@grainular/nord';
+     * import { GrainularSubject } from '@grainular/nord-rxjs';
+     *
+     * // Create a GrainularSubject with an initial value of 0
+     * const _count = new GrainularSubject(0);
+     *
+     * // Create a Grainular component that increments the value on button click
+     * const App = createComponent((html) => {
+     *     return html`<button ${on('click', () => _count.next(_count.value + 1))}>
+     *         ${_count.asGrain()}
+     *     </button>`;
+     * });
+     */
+    constructor(initial: V) {
+        super(initial);
+
+        this._grain.subscribe = (subscriber: Subscriber<V>, seed = true) => {
+            const subscription = this.subscribe(subscriber);
+
+            return () => subscription.unsubscribe();
+        };
+
+        this._grain.set = (value: V) => {
+            this.next(value);
+        };
+
+        this._grain.update = (updater: Updater<V>) => {
+            this.next(updater(this.value));
+        };
+    }
+
+    /**
+     * Retrieves the internal Grain instance associated with this subject.
+     *
+     * @returns {Grain<V>} The Grain instance.
+     */
+    asGrain(): Grain<V> {
+        return this._grain;
+    }
+}
